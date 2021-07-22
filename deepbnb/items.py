@@ -60,3 +60,4 @@ class DeepbnbItem(scrapy.Item):
     transit = scrapy.Field()
     url = scrapy.Field()
     weekly_price_factor = scrapy.Field()
+    availability_percentage = scrapy.Field()

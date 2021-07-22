@@ -7,6 +7,7 @@ from logging import LoggerAdapter
 
 from deepbnb.api.ApiBase import ApiBase
 from deepbnb.api.PdpReviews import PdpReviews
+from deepbnb.api.CalendarMonthsv2 import CalendarMonths
 from deepbnb.items import DeepbnbItem
 
 
@@ -29,13 +30,15 @@ class PdpPlatformSections(ApiBase):
             currency: str,
             data_cache: dict,
             geography: dict,
-            pdp_reviews: PdpReviews
+            pdp_reviews: PdpReviews,
+            calendar_months: CalendarMonths
     ):
         super().__init__(api_key, logger, currency)
         self.__data_cache = data_cache
         self.__geography = geography
         self.__regex_amenity_id = re.compile(r'^([a-z0-9]+_)+([0-9]+)_')
         self.__pdp_reviews = pdp_reviews
+        self.__calendar_months = calendar_months
 
     def api_request(self, listing_id: str):
         """Generate scrapy.Request for listing page."""
@@ -167,8 +170,9 @@ class PdpPlatformSections(ApiBase):
             state=self.__geography['state'],
             # summary=listing['sectioned_description']['summary'],
             total_price=listing_data_cached['total_price'],
-            url="https://www.airbnb.com/rooms/{}".format(listing_id),
-            weekly_price_factor=listing_data_cached['weekly_price_factor']
+            url="https://www.airbnb.com.au/rooms/{}".format(listing_id),
+            weekly_price_factor=listing_data_cached['weekly_price_factor'],
+            availability_percentage = self.__calendar_months.api_request(listing_id)
         )
 
         self._get_detail_property(item, 'transit', 'Getting around', location['seeAllLocationDetails'], 'content')

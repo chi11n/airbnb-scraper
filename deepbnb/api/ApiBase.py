@@ -25,7 +25,7 @@ class ApiBase:
         if query is not None:
             query = urlencode(query)
 
-        return urlunparse(['https', 'www.airbnb.com', path, None, query, None])
+        return urlunparse(['https', 'www.airbnb.com.au', path, None, query, None])
 
     @staticmethod
     def _put_json_param_strings(query: dict):
@@ -53,10 +53,10 @@ class ApiBase:
             'Device-Memory':                    '8',
             'DPR':                              '2.625',
             'ect':                              '4g',
-            'Referer':                          'https://www.airbnb.com/',
+            'Referer':                          'https://www.airbnb.com.au/',
             'User-Agent':                       'Mozilla/5.0 (Linux; Android 8.0; Pixel 2 Build/OPD3.170816.012) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Mobile Safari/537.36',
             'Viewport-Width':                   '1180',
             'X-Airbnb-GraphQL-Platform-Client': 'minimalist-niobe',
-            'X-CSRF-Token':                     'V4$.airbnb.com$88klQ0-SkSk$f0wWUrY3M_I37iPj33S8w3-shUgkwi4Dq63e19JPlGQ=',
+            'X-CSRF-Token':                     'V4$.airbnb.com.au$88klQ0-SkSk$f0wWUrY3M_I37iPj33S8w3-shUgkwi4Dq63e19JPlGQ=',
             'X-CSRF-Without-Token':             '1',
         }

@@ -28,7 +28,7 @@ class XlsxItemExporter(BaseItemExporter):
             self._write_headers_and_set_fields_to_export(item)
 
         # Make name into a hyperlink
-        item['name'] = '=HYPERLINK("https://www.airbnb.com/rooms/{}", "{}")'.format(
+        item['name'] = '=HYPERLINK("https://www.airbnb.com.au/rooms/{}", "{}")'.format(
             item['id'], item.get('name', item['id'])),
 
         fields = self._get_serialized_fields(item, default_value='', include_empty=True)

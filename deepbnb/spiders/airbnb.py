@@ -6,6 +6,7 @@ from elasticsearch_dsl.index import Index
 from deepbnb.api.ExploreSearch import ExploreSearch
 from deepbnb.api.PdpPlatformSections import PdpPlatformSections
 from deepbnb.api.PdpReviews import PdpReviews
+from deepbnb.api.CalendarMonthsv2 import CalendarMonths
 from deepbnb.model import Listing
 
 
@@ -17,8 +18,8 @@ class AirbnbSpider(scrapy.Spider):
     """
 
     name = 'airbnb'
-    allowed_domains = ['airbnb.com']
-    default_currency = 'USD'
+    allowed_domains = ['airbnb.com.au']
+    default_currency = 'AUD'
     default_max_price = 3000
     default_price_increment = 100
     price_range = (0, default_max_price, default_price_increment)
@@ -105,8 +106,10 @@ class AirbnbSpider(scrapy.Spider):
             self.__currency,
             self.__data_cache,
             self.__geography,
-            PdpReviews(api_key, self.logger, self.__currency)
+            PdpReviews(api_key, self.logger, self.__currency),
+            CalendarMonths(api_key, self.logger, self.__currency)
         )
+
 
         # get params from injected constructor values
         params = {}
@@ -164,6 +167,7 @@ class AirbnbSpider(scrapy.Spider):
 
         self.__data_cache[listing['id']] = {
             # get general data
+            
             'avg_rating':             listing['avgRating'],
             'bathrooms':              listing['bathrooms'],
             'bedrooms':               listing['bedrooms'],
@@ -191,6 +195,7 @@ class AirbnbSpider(scrapy.Spider):
             'price_rate_type':        pricing['rateType'],
             # use total price if dates given, price rate otherwise. can't show total price if there are no dates.
             'total_price':            pricing['price']['total']['amount'] if self.__checkin else None
+
         }
 
     def __create_index_if_not_exists(self):
