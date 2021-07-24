@@ -3,8 +3,6 @@ import requests
 
 from logging import LoggerAdapter
 
-
-
 from deepbnb.api.ApiBase import ApiBase
 
 
@@ -32,24 +30,26 @@ class CalendarMonths(ApiBase):
         headers = self._get_search_headers()
         response = requests.get(url, headers=headers)
         data = json.loads(response.text)
-        #self._logger.debug(data)
+        # self._logger.debug(data)
         self._logger.info("parsing_listing_contents for Calendar " + data["calendar_months"][0]['abbr_name'])
 
         # loop through the calendar  data["calendar_months"]
         # and count totals and available =true
         total = 0
-        countAvailable = 0
+        count_available = 0
         for calData in data["calendar_months"]:
             for day in calData['days']:
                 total += 1
-                self._logger.debug(day['date'] + " available=" + str(day['available']))
+                # self._logger.debug(day['date'] + " available=" + str(day['available']))
                 if day['available']:
-                    countAvailable += 1
+                    count_available += 1
 
+        percentage = str(round((count_available / total), 2))
+        self._logger.debug("countAvailable=" + str(count_available) +
+                           ", total=" + str(total) +
+                           ", percent=" + percentage)
 
-        self._logger.debug("countAvailable=" + str(countAvailable) + ", total=" + str(total) + ", percent=" + str(((countAvailable / total), 2)))
-
-        return str(countAvailable / total)
+        return percentage
 
     def _get_url(self, listing_id: str) -> str:
         """Generate scrapy.Request for listing page."""

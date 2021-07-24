@@ -45,45 +45,45 @@ class PdpPlatformSections(ApiBase):
         _api_path = '/api/v3/PdpPlatformSections'
         query = {
             'operationName': 'PdpPlatformSections',
-            'locale':        'en',
-            'currency':      self._currency,
-            'variables':     {
+            'locale': 'en',
+            'currency': self._currency,
+            'variables': {
                 'request': {
-                    'id':                            listing_id,
-                    'layouts':                       ['SIDEBAR', 'SINGLE_COLUMN'],
-                    'pdpTypeOverride':               None,
-                    'translateUgc':                  None,
-                    'preview':                       False,
-                    'bypassTargetings':              False,
-                    'displayExtensions':             None,
-                    'adults':                        '1',
-                    'children':                      None,
-                    'infants':                       None,
-                    'causeId':                       None,
-                    'disasterId':                    None,
-                    'priceDropSource':               None,
-                    'promotionUuid':                 None,
-                    'selectedCancellationPolicyId':  None,
+                    'id': listing_id,
+                    'layouts': ['SIDEBAR', 'SINGLE_COLUMN'],
+                    'pdpTypeOverride': None,
+                    'translateUgc': None,
+                    'preview': False,
+                    'bypassTargetings': False,
+                    'displayExtensions': None,
+                    'adults': '1',
+                    'children': None,
+                    'infants': None,
+                    'causeId': None,
+                    'disasterId': None,
+                    'priceDropSource': None,
+                    'promotionUuid': None,
+                    'selectedCancellationPolicyId': None,
                     'forceBoostPriorityMessageType': None,
-                    'privateBooking':                False,
-                    'invitationClaimed':             False,
-                    'discountedGuestFeeVersion':     None,
-                    'staysBookingMigrationEnabled':  False,
-                    'useNewSectionWrapperApi':       False,
-                    'previousStateCheckIn':          None,
-                    'previousStateCheckOut':         None,
-                    'federatedSearchId':             None,
-                    'interactionType':               None,
-                    'searchId':                      None,
-                    'sectionIds':                    None,
-                    'checkIn':                       None,
-                    'checkOut':                      None,
-                    'p3ImpressionId':                'p3_1608841700_z2VzPeybmBEdZG20'
+                    'privateBooking': False,
+                    'invitationClaimed': False,
+                    'discountedGuestFeeVersion': None,
+                    'staysBookingMigrationEnabled': False,
+                    'useNewSectionWrapperApi': False,
+                    'previousStateCheckIn': None,
+                    'previousStateCheckOut': None,
+                    'federatedSearchId': None,
+                    'interactionType': None,
+                    'searchId': None,
+                    'sectionIds': None,
+                    'checkIn': None,
+                    'checkOut': None,
+                    'p3ImpressionId': 'p3_1608841700_z2VzPeybmBEdZG20'
                 }
             },
-            'extensions':    {
+            'extensions': {
                 'persistedQuery': {
-                    'version':    1,
+                    'version': 1,
                     'sha256Hash': '625a4ba56ba72f8e8585d60078eb95ea0030428cac8772fde09de073da1bcdd0'
                 }
             }
@@ -144,7 +144,7 @@ class PdpPlatformSections(ApiBase):
             # max_nights=listing.get('max_nights'),
             # min_nights=listing['min_nights'],
             monthly_price_factor=listing_data_cached['monthly_price_factor'],
-            name=listing_data_cached.get('name', listing_id),
+            name=(listing_data_cached.get('name', listing_id)).replace('"', '').replace(',', ' '),
             neighborhood_overview=listing_data_cached.get('neighborhood_overview'),
             # notes=listing['sectioned_description']['notes'],
             person_capacity=listing_data_cached['person_capacity'],
@@ -161,7 +161,9 @@ class PdpPlatformSections(ApiBase):
             rating_location=logging_data['locationRating'],
             rating_value=logging_data['valueRating'],
             review_count=listing_data_cached['review_count'],
-            reviews=self.__pdp_reviews.api_request(listing_id, 50),
+            # disabling this to stop prevent unnecessary api calls to reviews api
+            # reviews=self.__pdp_reviews.api_request(listing_id, 50),
+            reviews=None,
             room_and_property_type=listing_data_cached['room_and_property_type'],
             room_type=listing_data_cached['room_type'],
             room_type_category=listing_data_cached['room_type_category'],
@@ -172,7 +174,7 @@ class PdpPlatformSections(ApiBase):
             total_price=listing_data_cached['total_price'],
             url="https://www.airbnb.com.au/rooms/{}".format(listing_id),
             weekly_price_factor=listing_data_cached['weekly_price_factor'],
-            availability_percentage = self.__calendar_months.api_request(listing_id)
+            availability_percentage=self.__calendar_months.api_request(listing_id)
         )
 
         self._get_detail_property(item, 'transit', 'Getting around', location['seeAllLocationDetails'], 'content')
