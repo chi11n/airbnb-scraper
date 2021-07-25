@@ -37,6 +37,9 @@ class AirbnbSpider(scrapy.Spider):
             ne_lng=None,
             sw_lat=None,
             sw_lng=None,
+            cal_month=None,
+            cal_year=None,
+            cal_count=None,
             **kwargs
     ):
         """Class constructor."""
@@ -57,6 +60,9 @@ class AirbnbSpider(scrapy.Spider):
         self.__set_price_params(max_price, min_price)
         self.__sw_lat = sw_lat
         self.__sw_lng = sw_lng
+        self.__cal_month = cal_month
+        self.__cal_year = cal_year
+        self.__cal_count = cal_count
 
     def parse(self, response, **kwargs):
         """Default parse method."""
@@ -107,7 +113,7 @@ class AirbnbSpider(scrapy.Spider):
             self.__data_cache,
             self.__geography,
             PdpReviews(api_key, self.logger, self.__currency),
-            CalendarMonths(api_key, self.logger, self.__currency)
+            CalendarMonths(api_key, self.logger, self.__currency, self.__cal_month, self.__cal_year, self.__cal_count)
         )
 
 

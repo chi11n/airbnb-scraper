@@ -1,6 +1,7 @@
 import lxml.html
 import re
 import scrapy
+import emoji
 
 from typing import Union
 from logging import LoggerAdapter
@@ -130,7 +131,7 @@ class PdpPlatformSections(ApiBase):
             bedrooms=listing_data_cached['bedrooms'],
             beds=listing_data_cached['beds'],
             business_travel_ready=listing_data_cached['business_travel_ready'],
-            city=listing_data_cached.get('city', self.__geography['city']),
+            city=listing_data_cached.get('city', self.__geography['city']).replace('"', '').replace(',', ' ').upper(),
             country=self.__geography['country'],
             description=self._html_to_text(
                 description_section['htmlDescription']['htmlText']
@@ -144,7 +145,9 @@ class PdpPlatformSections(ApiBase):
             # max_nights=listing.get('max_nights'),
             # min_nights=listing['min_nights'],
             monthly_price_factor=listing_data_cached['monthly_price_factor'],
-            name=(listing_data_cached.get('name', listing_id)).replace('"', '').replace(',', ' '),
+            name=emoji.demojize(
+                (listing_data_cached.get('name', listing_id)).replace('\n', ' ').replace('"', '').replace(',', ' ')
+            ),
             neighborhood_overview=listing_data_cached.get('neighborhood_overview'),
             # notes=listing['sectioned_description']['notes'],
             person_capacity=listing_data_cached['person_capacity'],
