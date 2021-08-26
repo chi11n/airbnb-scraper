@@ -38,14 +38,14 @@ class CalendarMonths(ApiBase):
             response = requests.get(url, headers=headers)
             data = json.loads(response.text)
             # self._logger.debug(data)
-            self._logger.info("parsing_listing_contents for Calendar " + data["calendar_months"][0]['abbr_name'])
-
+            
             # loop through the calendar  data["calendar_months"]
             # and count totals and available =true
             total = 0
             count_available = 0
-            for calData in data["calendar_months"]:
-                for day in calData['days']:
+            for cal_months in data["calendar_months"]:
+                #self._logger.info("parsing_listing_contents for Calendar " + cal_months['year'] + " " + cal_months['name'])
+                for day in cal_months['days']:
                     total += 1
                     # self._logger.debug(day['date'] + " available=" + str(day['available']))
                     if day['available']:

@@ -108,7 +108,12 @@ class PdpPlatformSections(ApiBase):
         # Get sections
         amenities_section = [s for s in sections if s['sectionId'] == 'AMENITIES_DEFAULT'][0]['section']
         description_section = [s for s in sections if s['sectionId'] == 'DESCRIPTION_DEFAULT'][0]['section']
-        host_profile = [s for s in sections if s['sectionId'] == 'HOST_PROFILE_DEFAULT'][0]['section']
+        #try:
+        #    host_profile = [s for s in sections if s['sectionId'] == 'HOST_PROFILE_DEFAULT'][0]['section']
+        #except:
+        #    host_profile = [s for s in sections if s['sectionId'] == 'HOST_PROFILE_DESKTOP'][0]['section']
+
+
         location = [s for s in sections if s['sectionId'] == 'LOCATION_DEFAULT'][0]['section']
         policies = [s for s in sections if s['sectionId'] == 'POLICIES_DEFAULT'][0]['section']
 
@@ -124,7 +129,7 @@ class PdpPlatformSections(ApiBase):
             access=self._render_titles(amenities_access[0]) if amenities_access else None,
             additional_house_rules=policies['additionalHouseRules'],
             allows_events='No parties or events' in [r['title'] for r in policies['houseRules']],
-            amenities=self._render_titles(amenities_avail, sep=' - ', join=False),
+            amenities=self._render_titles(amenities_avail, sep=' - ', join=True),
             amenity_ids=list(self._get_amenity_ids(amenities_avail)),
             avg_rating=listing_data_cached['avg_rating'],
             bathrooms=listing_data_cached['bathrooms'],
@@ -180,8 +185,9 @@ class PdpPlatformSections(ApiBase):
             availability_percentage=self.__calendar_months.api_request(listing_id)
         )
 
-        self._get_detail_property(item, 'transit', 'Getting around', location['seeAllLocationDetails'], 'content')
-        self._get_detail_property(item, 'interaction', 'During your stay', host_profile['hostInfos'], 'html')
+        # disbaling this since we're not using it
+        # self._get_detail_property(item, 'transit', 'Getting around', location['seeAllLocationDetails'], 'content')
+        # self._get_detail_property(item, 'interaction', 'During your stay', host_profile['hostInfos'], 'html')
 
         return item
 

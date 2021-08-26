@@ -177,6 +177,8 @@ class ExploreSearch(ApiBase):
                     'searchType':            'search_query',
                     'query':                 query,
                     'roomTypes':             self.__room_types,
+                    # propertyTypeId 6=Treehouse, 15=Yurt, 23=Earth house, 24=Hut, 25=Train, 34=Tent, 67=Tiny house
+                    "propertyTypeId":        [34,67,24,23,15,6,25],
                     'cdnCacheSafe':          False,
                     'simpleSearchTreatment': 'simple_search_only',
                     'treatmentFlags':        [
